@@ -1,0 +1,200 @@
+@startuml
+
+title __INSTAGRAM4J's Class Diagram__\n
+
+  namespace tw.waterball.impls.instagram4j {
+    abstract class tw.waterball.impls.instagram4j.AbstractInstagram4JFeedAdapter {
+        # content : String
+        # feed : InstagramFeedItem
+        + AbstractInstagram4JFeedAdapter()
+        + AbstractInstagram4JFeedAdapter()
+        + getContent()
+    }
+  }
+  
+
+  namespace tw.waterball.impls.instagram4j {
+    abstract class tw.waterball.impls.instagram4j.AbstractInstagram4jUserAdapter {
+        # isPublic : boolean
+        # username : String
+        - user : InstagramUser
+        + AbstractInstagram4jUserAdapter()
+        + getCategory()
+        + getCity()
+        + getPK()
+        + getUsername()
+        + isPublic()
+        ~ AbstractInstagram4jUserAdapter()
+        ~ AbstractInstagram4jUserAdapter()
+        - loadUserDataIfNotLoaded()
+    }
+  }
+  
+
+  namespace tw.waterball.impls.instagram4j {
+    class tw.waterball.impls.instagram4j.AdapterWrapping {
+        {static} ~ wrap4JComments()
+        {static} ~ wrap4JFeedItems()
+        {static} ~ wrap4JInboxThreads()
+        {static} ~ wrap4JPendingInboxThreads()
+        {static} ~ wrap4JUser()
+        {static} ~ wrap4JUserSummaries()
+    }
+  }
+  
+
+  namespace tw.waterball.impls.instagram4j {
+    class tw.waterball.impls.instagram4j.Instagram4JAdapter {
+        - instagram4j : Instagram4j
+        + Instagram4JAdapter()
+        + Instagram4JAdapter()
+        + getUsername()
+        + login()
+        + sendRequest()
+        - setupAndLoginInstagram4J()
+    }
+  }
+  
+
+  namespace tw.waterball.impls.instagram4j {
+    class tw.waterball.impls.instagram4j.Instagram4JCommentAdapter {
+        - comment : InstagramComment
+        + getCommenter()
+        ~ Instagram4JCommentAdapter()
+    }
+  }
+  
+
+  namespace tw.waterball.impls.instagram4j {
+    class tw.waterball.impls.instagram4j.Instagram4JFeedAdapter {
+        + comment()
+        + getCommenters()
+        + getComments()
+        + getDistinctCommenters()
+        + getRecentCommenters()
+        + getRecentComments()
+        + like()
+        + unlike()
+        ~ Instagram4JFeedAdapter()
+    }
+  }
+  
+
+  namespace tw.waterball.impls.instagram4j {
+    class tw.waterball.impls.instagram4j.Instagram4JInboxAdapter {
+        - getInboxResult : InstagramInboxResult
+        - getPendingInboxResult : InstagramPendingInboxResult
+        + getPendingThreads()
+        + getThreads()
+        + getUnseenThreads()
+        + hasPendingRequest()
+        + hasUnseen()
+        ~ Instagram4JInboxAdapter()
+    }
+  }
+  
+
+  namespace tw.waterball.impls.instagram4j {
+    class tw.waterball.impls.instagram4j.Instagram4JInboxThreadAdapter {
+        # messages : List<String>
+        # thread : InstagramInboxThread
+        # users : List<InstagramUser>
+        + Instagram4JInboxThreadAdapter()
+        + getMessage()
+        + getMessages()
+        + getRecentMessages()
+        + getUsers()
+        + reply()
+        - loadMessagesAtIndexIfNotAlreadyLoaded()
+    }
+  }
+  
+
+  namespace tw.waterball.impls.instagram4j {
+    class tw.waterball.impls.instagram4j.Instagram4JInstantiator {
+        {static} + instantiate()
+        {static} + instantiate()
+    }
+  }
+  
+
+  namespace tw.waterball.impls.instagram4j {
+    class tw.waterball.impls.instagram4j.Instagram4JPendingInboxThreadAdapter {
+        + approve()
+        + decline()
+        ~ Instagram4JPendingInboxThreadAdapter()
+    }
+  }
+  
+
+  namespace tw.waterball.impls.instagram4j {
+    class tw.waterball.impls.instagram4j.Instagram4JSessionAdapter {
+        + comment()
+        + getUsername()
+        + inbox()
+        + like()
+        + searchFeedsByTag()
+        + searchUser()
+        ~ Instagram4JSessionAdapter()
+    }
+  }
+  
+
+  namespace tw.waterball.impls.instagram4j {
+    class tw.waterball.impls.instagram4j.Instagram4JUserAdapter {
+        + follow()
+        + getFeeds()
+        + getFollowers()
+        + getFollowings()
+        + getRecentFeeds()
+        + getRecentFollowers()
+        + getRecentFollowings()
+        + hasFollowMe()
+        + likeRecentFeeds()
+        + sendDM()
+        + unfollow()
+        ~ Instagram4JUserAdapter()
+        ~ Instagram4JUserAdapter()
+    }
+  }
+  
+
+  namespace tw.waterball.impls.instagram4j {
+    class tw.waterball.impls.instagram4j.TemplateUtils {
+        {static} + requestForDistinctPagedItems()
+        {static} ~ requestForPagedItems()
+    }
+  }
+  
+
+  tw.waterball.impls.instagram4j.AbstractInstagram4JFeedAdapter .up.|> tw.waterball.api.InstagramFeed
+  tw.waterball.impls.instagram4j.AbstractInstagram4JFeedAdapter -up-|> tw.waterball.api.AbstractInstagramPk
+  tw.waterball.impls.instagram4j.AbstractInstagram4jUserAdapter .up.|> tw.waterball.api.InstagramUser
+  tw.waterball.impls.instagram4j.AbstractInstagram4jUserAdapter -up-|> tw.waterball.api.AbstractInstagramPk
+  tw.waterball.impls.instagram4j.AbstractInstagram4jUserAdapter o-- tw.waterball.impls.instagram4j.Instagram4JAdapter : ig
+  tw.waterball.impls.instagram4j.Instagram4JAdapter .up.|> tw.waterball.api.Instagram
+  tw.waterball.impls.instagram4j.Instagram4JCommentAdapter .up.|> tw.waterball.api.InstagramComment
+  tw.waterball.impls.instagram4j.Instagram4JCommentAdapter -up-|> tw.waterball.api.AbstractInstagramPk
+  tw.waterball.impls.instagram4j.Instagram4JCommentAdapter o-- tw.waterball.impls.instagram4j.Instagram4JAdapter : ig
+  tw.waterball.impls.instagram4j.Instagram4JFeedAdapter -up-|> tw.waterball.impls.instagram4j.AbstractInstagram4JFeedAdapter
+  tw.waterball.impls.instagram4j.Instagram4JFeedAdapter o-- tw.waterball.impls.instagram4j.Instagram4JAdapter : ig
+  tw.waterball.impls.instagram4j.Instagram4JInboxAdapter .up.|> tw.waterball.api.InstagramInbox
+  tw.waterball.impls.instagram4j.Instagram4JInboxAdapter o-- tw.waterball.impls.instagram4j.Instagram4JAdapter : ig
+  tw.waterball.impls.instagram4j.Instagram4JInboxThreadAdapter .up.|> tw.waterball.api.InstagramInboxThread
+  tw.waterball.impls.instagram4j.Instagram4JInboxThreadAdapter -up-|> tw.waterball.api.AbstractInstagramId
+  tw.waterball.impls.instagram4j.Instagram4JInboxThreadAdapter o-- tw.waterball.impls.instagram4j.Instagram4JAdapter : ig
+  tw.waterball.impls.instagram4j.Instagram4JPendingInboxThreadAdapter .up.|> tw.waterball.api.InstagramPendingInboxThread
+  tw.waterball.impls.instagram4j.Instagram4JPendingInboxThreadAdapter -up-|> tw.waterball.impls.instagram4j.Instagram4JInboxThreadAdapter
+  tw.waterball.impls.instagram4j.Instagram4JSessionAdapter .up.|> tw.waterball.api.InstagramSession
+  tw.waterball.impls.instagram4j.Instagram4JSessionAdapter o-- tw.waterball.impls.instagram4j.Instagram4JAdapter : ig
+  tw.waterball.impls.instagram4j.Instagram4JUserAdapter -up-|> tw.waterball.impls.instagram4j.AbstractInstagram4jUserAdapter
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml
