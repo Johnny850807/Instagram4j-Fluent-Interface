@@ -86,22 +86,22 @@ public class MockInstagram4JUserAdapter extends AbstractInstagram4jUserAdapter {
     }
 
     @Override
-    public Pagination<InstagramUser> getRecentFollowers() {
+    public List<InstagramUser> getRecentFollowers() {
+        return  Collections.emptyList();
+    }
+
+    @Override
+    public List<InstagramUser> getRecentFollowings() {
+        return  Collections.emptyList();
+    }
+
+    @Override
+    public Pagination<InstagramUser> getPagedFollowers(int maxNum) {
         return  Pagination.empty();
     }
 
     @Override
-    public Pagination<InstagramUser> getRecentFollowings() {
-        return  Pagination.empty();
-    }
-
-    @Override
-    public Pagination<InstagramUser> getFollowers(int maxNum) {
-        return  Pagination.empty();
-    }
-
-    @Override
-    public Pagination<InstagramUser> getFollowings(int maxNum) {
+    public Pagination<InstagramUser> getPagedFollowings(int maxNum) {
         return  Pagination.empty();
     }
 
@@ -111,8 +111,8 @@ public class MockInstagram4JUserAdapter extends AbstractInstagram4jUserAdapter {
     }
 
     @Override
-    public List<InstagramFeed> getFeeds(int num) {
-        return Collections.emptyList();
+    public Pagination<InstagramFeed> getPagedFeeds(int num) {
+        return Pagination.empty();
     }
 
     @Override

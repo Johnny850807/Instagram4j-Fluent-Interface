@@ -111,25 +111,25 @@ public class ForeachUser {
 
     public ForeachUser aggregateRecentFollowers() {
         return new ForeachUser(items.stream()
-                .flatMap(user -> user.getRecentFollowers().aggregate().stream())
+                .flatMap(user -> user.getRecentFollowers().stream())
                 .collect(Collectors.toList()));
     }
 
     public ForeachUser aggregateRecentFollowings() {
         return new ForeachUser(items.stream()
-                .flatMap(user -> user.getRecentFollowings().aggregate().stream())
+                .flatMap(user -> user.getRecentFollowings().stream())
                 .collect(Collectors.toList()));
     }
 
     public ForeachUser aggregateFollowers(int num) {
         return new ForeachUser(items.stream()
-                .flatMap(user -> user.getFollowers(num).aggregate().stream())
+                .flatMap(user -> user.getPagedFollowers(num).aggregate().stream())
                 .collect(Collectors.toList()));
     }
 
     public ForeachUser aggregateFollowings(int num) {
         return new ForeachUser(items.stream()
-                .flatMap(user -> user.getFollowers(num).aggregate().stream())
+                .flatMap(user -> user.getPagedFollowers(num).aggregate().stream())
                 .collect(Collectors.toList()));
     }
 
@@ -141,7 +141,7 @@ public class ForeachUser {
 
     public ForeachFeed getFeeds(int num) {
         return new ForeachFeed(items.stream()
-                .flatMap(user -> user.getFeeds(num).stream())
+                .flatMap(user -> user.getPagedFeeds(num).aggregate().stream())
                 .collect(Collectors.toList()));
     }
 

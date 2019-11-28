@@ -75,22 +75,26 @@ public interface InstagramUser extends InstagramPk {
     InstagramUser unfollow();
     InstagramUser likeRecentFeeds();
 
-    Pagination<InstagramUser> getRecentFollowers();
-    Pagination<InstagramUser> getRecentFollowings();
-    Pagination<InstagramUser> getFollowers(int maxNum);
-    Pagination<InstagramUser> getFollowings(int maxNum);
+    List<InstagramUser> getRecentFollowers();
+    List<InstagramUser> getRecentFollowings();
+    Pagination<InstagramUser> getPagedFollowers(int maxNum);
+    Pagination<InstagramUser> getPagedFollowings(int maxNum);
 
-    default Pagination<InstagramUser> getAllFollowers() {
-        return getFollowers(Integer.MAX_VALUE);
+    default Pagination<InstagramUser> getPagedAllFollowers() {
+        return getPagedFollowers(Integer.MAX_VALUE);
     }
 
-    default Pagination<InstagramUser> getAllFollowings() {
-        return getFollowings(Integer.MAX_VALUE);
+    default Pagination<InstagramUser> getPagedAllFollowings() {
+        return getPagedFollowings(Integer.MAX_VALUE);
     }
 
     List<InstagramFeed> getRecentFeeds();
 
-    List<InstagramFeed> getFeeds(int num);
+    Pagination<InstagramFeed> getPagedFeeds(int num);
+
+    default Pagination<InstagramFeed> getPagedAllFeeds() {
+        return getPagedFeeds(Integer.MAX_VALUE);
+    }
 
     InstagramUser sendDM(String message);
 
@@ -105,36 +109,36 @@ public interface InstagramUser extends InstagramPk {
     }
 
     default Optional<InstagramFeed> getFirstFeedOptional() {
-        List<InstagramFeed> feeds = getRecentFeeds();
+        List<InstagramFeed> feeds = getPagedFeeds(1).aggregate();
         return Optional.ofNullable(feeds.isEmpty() ? null : feeds.get(0));
     }
 
     default InstagramFeed getFirstFeed() {
-        List<InstagramFeed> feeds = getRecentFeeds();
+        List<InstagramFeed> feeds = getPagedFeeds(1).aggregate();
         return feeds.get(0);
     }
 
     default ForeachUser foreachRecentFollowers() {
-        return new ForeachUser(getRecentFollowers().aggregate());
+        return new ForeachUser(getRecentFollowers());
     }
 
     default ForeachUser foreachRecentFollowings() {
-        return new ForeachUser(getRecentFollowings().aggregate());
+        return new ForeachUser(getRecentFollowings());
     }
 
     default ForeachUser foreachFollowers(int num) {
-        return new ForeachUser(getFollowers(num).aggregate());
+        return new ForeachUser(getPagedFollowers(num).aggregate());
     }
 
     default ForeachUser foreachFollowings(int num) {
-        return new ForeachUser(getFollowings(num).aggregate());
+        return new ForeachUser(getPagedFollowings(num).aggregate());
     }
 
     default ForeachUser foreachAllFollowers() {
-        return new ForeachUser(getAllFollowers().aggregate());
+        return new ForeachUser(getPagedAllFollowers().aggregate());
     }
 
     default ForeachUser foreachAllFollowings() {
-        return new ForeachUser(getAllFollowings().aggregate());
+        return new ForeachUser(getPagedAllFollowings().aggregate());
     }
 }

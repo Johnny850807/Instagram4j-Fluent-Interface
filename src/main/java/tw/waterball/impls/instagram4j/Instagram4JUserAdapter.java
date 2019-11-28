@@ -48,15 +48,12 @@
 
 package tw.waterball.impls.instagram4j;
 
-import tw.waterball.api.Instagram;
 import tw.waterball.api.InstagramFeed;
 import tw.waterball.api.InstagramUser;
 import org.brunocvcunha.instagram4j.requests.*;
 import org.brunocvcunha.instagram4j.requests.payload.InstagramFeedItem;
-import org.brunocvcunha.instagram4j.requests.payload.InstagramFeedResult;
-import org.brunocvcunha.instagram4j.requests.payload.InstagramGetUserFollowersResult;
-import org.brunocvcunha.instagram4j.requests.payload.InstagramUserSummary;
 import tw.waterball.api.pagination.Pagination;
+import tw.waterball.impls.instagram4j.pagination.InstagramFeedPagingIterator;
 import tw.waterball.impls.instagram4j.pagination.InstagramFollowerPagingIterator;
 import tw.waterball.impls.instagram4j.pagination.InstagramFollowingPagingIterator;
 
@@ -75,7 +72,7 @@ public class Instagram4JUserAdapter extends AbstractInstagram4jUserAdapter {
 
     @Override
     public boolean hasFollowMe() {
-        return getAllFollowings().aggregate().stream()
+        return getPagedAllFollowings().aggregate().stream()
                 .anyMatch(user -> user.getUsername().equals(ig.getUsername()));
     }
 
@@ -98,22 +95,22 @@ public class Instagram4JUserAdapter extends AbstractInstagram4jUserAdapter {
     }
 
     @Override
-    public Pagination<InstagramUser> getRecentFollowers() {
-        return new Pagination<>(()-> new InstagramFollowerPagingIterator(ig, getPK()));
+    public List<InstagramUser> getRecentFollowers() {
+        return AdapterWrapping.wrap4JUserSummaries(ig, ig.sendRequest(new InstagramGetUserFollowersRequest(getPK())).getUsers());
     }
 
     @Override
-    public Pagination<InstagramUser> getRecentFollowings() {
-        return new Pagination<>(()-> new InstagramFollowingPagingIterator(ig, getPK()));
+    public List<InstagramUser> getRecentFollowings() {
+        return AdapterWrapping.wrap4JUserSummaries(ig, ig.sendRequest(new InstagramGetUserFollowingRequest(getPK())).getUsers());
     }
 
     @Override
-    public Pagination<InstagramUser> getFollowers(int maxNum) {
+    public Pagination<InstagramUser> getPagedFollowers(int maxNum) {
         return new Pagination<>(()-> new InstagramFollowerPagingIterator(maxNum, ig, getPK()));
     }
 
     @Override
-    public Pagination<InstagramUser> getFollowings(int maxNum) {
+    public Pagination<InstagramUser> getPagedFollowings(int maxNum) {
         return new Pagination<>(()-> new InstagramFollowingPagingIterator(maxNum, ig, getPK()));
     }
 
@@ -123,20 +120,9 @@ public class Instagram4JUserAdapter extends AbstractInstagram4jUserAdapter {
         return AdapterWrapping.wrap4JFeedItems(ig, feeds);
     }
 
-    //TODO
     @Override
-    public List<InstagramFeed> getFeeds(int maxNum) {
-        List<InstagramFeedItem> items = TemplateUtils.requestForPagedItems(
-                ig, maxNum,
-                // InstagramUserFeedRequest constructor issue sees https://github.com/brunocvcunha/instagram4j/issues/368
-                // it only works when the last two arguments are passed zero
-                (nextMaxId) -> new InstagramUserFeedRequest(getPK(), nextMaxId, 0, 0),
-                InstagramFeedResult::getItems,
-                InstagramFeedResult::isMore_available,
-                (result, allItems) -> result.getNext_max_id()
-        );
-
-        return AdapterWrapping.wrap4JFeedItems(ig, items);
+    public Pagination<InstagramFeed> getPagedFeeds(int maxNum) {
+        return new Pagination<>(()-> new InstagramFeedPagingIterator(maxNum, ig, getPK()));
     }
 
     @Override
