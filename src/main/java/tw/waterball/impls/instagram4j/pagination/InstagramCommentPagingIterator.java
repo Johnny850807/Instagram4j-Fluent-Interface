@@ -16,8 +16,11 @@
 
 package tw.waterball.impls.instagram4j.pagination;
 
+import org.brunocvcunha.instagram4j.requests.InstagramGetMediaCommentsRequest;
 import org.brunocvcunha.instagram4j.requests.InstagramUserFeedRequest;
 import org.brunocvcunha.instagram4j.requests.payload.InstagramFeedResult;
+import org.brunocvcunha.instagram4j.requests.payload.InstagramGetMediaCommentsResult;
+import tw.waterball.api.InstagramComment;
 import tw.waterball.api.InstagramFeed;
 import tw.waterball.api.pagination.Page;
 import tw.waterball.api.pagination.PagingIterator;
@@ -27,18 +30,18 @@ import tw.waterball.impls.instagram4j.Instagram4JAdapter;
 /**
  * @author - johnny850807@gmail.com (Waterball)
  */
-public class InstagramFeedPagingIterator extends PagingIterator<InstagramFeed> {
+public class InstagramCommentPagingIterator extends PagingIterator<InstagramComment> {
     private Instagram4JAdapter ig;
     private long userPk;
-    private String nextMaxId;
-    private InstagramFeedResult result;
+    private String nextMaxCommentPk;
+    private InstagramGetMediaCommentsResult result;
 
-    public InstagramFeedPagingIterator(Instagram4JAdapter ig, long userPk) {
+    public InstagramCommentPagingIterator(Instagram4JAdapter ig, long userPk) {
         this.ig = ig;
         this.userPk = userPk;
     }
 
-    public InstagramFeedPagingIterator(int limit, Instagram4JAdapter ig, long userPk) {
+    public InstagramCommentPagingIterator(int limit, Instagram4JAdapter ig, long userPk) {
         super(limit);
         this.ig = ig;
         this.userPk = userPk;
@@ -46,13 +49,18 @@ public class InstagramFeedPagingIterator extends PagingIterator<InstagramFeed> {
 
     @Override
     protected boolean hasNextPage() {
-        return result == null /*first fetch*/ || result.isMore_available();
+        return result == null /*first fetch*/ || result.isHas_more_comments();
     }
 
     @Override
-    protected Page<InstagramFeed> getNextPage() {
-        this.result = ig.sendRequest(new InstagramUserFeedRequest(userPk, nextMaxId, 0, 0));
-        nextMaxId = result.getNext_max_id();
-        return new Page<>(AdapterWrapping.wrap4JFeedItems(ig, result.getItems()));
+    protected Page<InstagramComment> getNextPage() {
+        this.result = ig.sendRequest(new InstagramGetMediaCommentsRequest(String.valueOf(userPk), nextMaxCommentPk));
+
+        // the reason that we have to pass the pk of the first item of the comment page instead of result.getNext_max_id().
+        // is that the nextMaxId doesn't work for the comments api
+        // https://github.com/brunocvcunha/instagram4j/issues/259
+        nextMaxCommentPk = String.valueOf(result.getComments().get(0).getPk());
+
+        return new Page<>(AdapterWrapping.wrap4JComments(ig, result.getComments()));
     }
 }

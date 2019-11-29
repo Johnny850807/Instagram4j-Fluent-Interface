@@ -25,15 +25,15 @@ import java.util.function.Supplier;
  * @author - johnny850807@gmail.com (Waterball)
  */
 public class Pagination<T> implements Iterable<Page<T>> {
-    private Supplier<Iterator<Page<T>>> pagingIteratorSupplier;
+    private Iterator<Page<T>> pageIterator;
 
-    public Pagination(Supplier<Iterator<Page<T>>> pagingIteratorSupplier) {
-        this.pagingIteratorSupplier = pagingIteratorSupplier;
+    public Pagination(Iterator<Page<T>> pageIterator) {
+        this.pageIterator = pageIterator;
     }
 
     @Override
     public Iterator<Page<T>> iterator() {
-        return pagingIteratorSupplier.get();
+        return pageIterator;
     }
 
     public List<T> aggregate() {
@@ -45,7 +45,7 @@ public class Pagination<T> implements Iterable<Page<T>> {
     }
 
     public static <T> Pagination<T> empty() {
-        return new Pagination<>(()->new Iterator<Page<T>>() {
+        return new Pagination<>(new Iterator<Page<T>>() {
             @Override
             public boolean hasNext() {
                 return false;

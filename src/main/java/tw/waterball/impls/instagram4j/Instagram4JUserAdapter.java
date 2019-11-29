@@ -62,11 +62,11 @@ import java.util.List;
 
 public class Instagram4JUserAdapter extends AbstractInstagram4jUserAdapter {
 
-    Instagram4JUserAdapter(Instagram4JAdapter ig, org.brunocvcunha.instagram4j.requests.payload.InstagramUser user) {
+    public Instagram4JUserAdapter(Instagram4JAdapter ig, org.brunocvcunha.instagram4j.requests.payload.InstagramUser user) {
         super(ig, user);
     }
 
-    Instagram4JUserAdapter(Instagram4JAdapter ig, String username) {
+    public Instagram4JUserAdapter(Instagram4JAdapter ig, String username) {
         super(ig, username);
     }
 
@@ -106,12 +106,12 @@ public class Instagram4JUserAdapter extends AbstractInstagram4jUserAdapter {
 
     @Override
     public Pagination<InstagramUser> getPagedFollowers(int maxNum) {
-        return new Pagination<>(()-> new InstagramFollowerPagingIterator(maxNum, ig, getPK()));
+        return new Pagination<>(new InstagramFollowerPagingIterator(maxNum, ig, getPK()));
     }
 
     @Override
     public Pagination<InstagramUser> getPagedFollowings(int maxNum) {
-        return new Pagination<>(()-> new InstagramFollowingPagingIterator(maxNum, ig, getPK()));
+        return new Pagination<>(new InstagramFollowingPagingIterator(maxNum, ig, getPK()));
     }
 
     @Override
@@ -122,7 +122,7 @@ public class Instagram4JUserAdapter extends AbstractInstagram4jUserAdapter {
 
     @Override
     public Pagination<InstagramFeed> getPagedFeeds(int maxNum) {
-        return new Pagination<>(()-> new InstagramFeedPagingIterator(maxNum, ig, getPK()));
+        return new Pagination<>(new InstagramFeedPagingIterator(maxNum, ig, getPK()));
     }
 
     @Override

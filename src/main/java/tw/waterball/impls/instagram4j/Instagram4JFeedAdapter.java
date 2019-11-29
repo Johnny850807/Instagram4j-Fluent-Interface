@@ -53,7 +53,10 @@ import tw.waterball.api.InstagramFeed;
 import tw.waterball.api.InstagramUser;
 import org.brunocvcunha.instagram4j.requests.*;
 import org.brunocvcunha.instagram4j.requests.payload.InstagramFeedItem;
-import org.brunocvcunha.instagram4j.requests.payload.InstagramGetMediaCommentsResult;
+import tw.waterball.api.pagination.Pagination;
+import tw.waterball.impls.instagram4j.pagination.InstagramCommentPagingIterator;
+import tw.waterball.impls.instagram4j.pagination.InstagramCommenterPagingIterator;
+import tw.waterball.impls.instagram4j.pagination.InstagramDistinctCommenterPagingIterator;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -93,20 +96,8 @@ public class Instagram4JFeedAdapter extends AbstractInstagram4JFeedAdapter {
     }
 
     @Override
-    public List<InstagramComment> getComments(int maxNum) {
-        List<org.brunocvcunha.instagram4j.requests.payload.InstagramComment> items = TemplateUtils.requestForPagedItems(
-                ig, maxNum,
-                (nextMaxId) -> new InstagramGetMediaCommentsRequest(String.valueOf(getPK()), nextMaxId),
-                InstagramGetMediaCommentsResult::getComments,
-                InstagramGetMediaCommentsResult::isHas_more_comments,
-
-                // the reason that we have to pass the pk of the first item of the page instead of result.getNext_max_id().
-                // it's because that nextMaxId doesn't work for the comments api
-                // https://github.com/brunocvcunha/instagram4j/issues/259
-                (result, allItems) -> String.valueOf(allItems.get(0).getPk())
-        );
-
-        return AdapterWrapping.wrap4JComments(ig, items);
+    public Pagination<InstagramComment> getPagedComments(int maxNum) {
+        return new Pagination<>(new InstagramCommentPagingIterator(maxNum, ig, getPK()));
     }
 
     @Override
@@ -117,25 +108,14 @@ public class Instagram4JFeedAdapter extends AbstractInstagram4JFeedAdapter {
     }
 
     @Override
-    public List<InstagramUser> getCommenters(int maxNum) {
-        return getComments(maxNum).stream()
-                .map(InstagramComment::getCommenter)
-                .collect(Collectors.toList());
+    public Pagination<InstagramUser> getPagedCommenters(int maxNum) {
+        return new Pagination<>(
+                new InstagramCommenterPagingIterator(
+                        new InstagramCommentPagingIterator(maxNum, ig, getPK())));
     }
 
     @Override
-    public List<InstagramUser> getDistinctCommenters(int maxNum) {
-        // due to the api restriction, we cannot directly fetch the distinct commenter in the expected number
-        // so we just get all commenters once then remain the distinct items.
-        HashSet<Long> distinctPks = new HashSet<>();
-        List<InstagramUser> commenters = getAllCommenters();
-        ArrayList<InstagramUser> distinctCommenters = new ArrayList<>();
-        for (InstagramUser commenter : commenters) {
-            if (!distinctPks.contains(commenter.getPK())) {
-                distinctPks.add(commenter.getPK());
-                distinctCommenters.add(commenter);
-            }
-        }
-        return distinctCommenters;
+    public Pagination<InstagramUser> getPagedDistinctCommenters(int maxNum) {
+        return new Pagination<>(new InstagramDistinctCommenterPagingIterator(maxNum, ig, getPK()));
     }
 }
