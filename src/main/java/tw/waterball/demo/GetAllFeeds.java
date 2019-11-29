@@ -36,6 +36,7 @@ import tw.waterball.api.Instagram;
 import tw.waterball.api.InstagramFeed;
 import tw.waterball.api.InstagramProperties;
 import tw.waterball.api.InstagramSession;
+import tw.waterball.api.pagination.Page;
 import tw.waterball.impls.instagram4j.Instagram4JInstantiator;
 
 import java.util.List;
@@ -47,12 +48,12 @@ public class GetAllFeeds {
         // replace with your own username
         InstagramSession session = ig.login("dailymatchman", InstagramProperties.password("dailymatchman"));
 
-        List<InstagramFeed> feeds = session.searchUser("dailymatchman")
-                .getFeeds(Integer.MAX_VALUE);
-
-        for (InstagramFeed feed : feeds) {
-            System.out.println("==================================\n");
-            System.out.println(feed.getContent());
+        for (Page<InstagramFeed> page : session.searchUser("johnny850807").getPagedFeeds(50)) {
+            System.out.println("============ New Page ============");
+            for (InstagramFeed feed : page) {
+                System.out.println("\n============ Feed ============\n");
+                System.out.println(feed.getContent());
+            }
         }
 
         System.out.println();

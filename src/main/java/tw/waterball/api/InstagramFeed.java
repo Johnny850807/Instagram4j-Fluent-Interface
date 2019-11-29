@@ -50,6 +50,7 @@ package tw.waterball.api;
 
 import tw.waterball.api.foreach.ForeachUser;
 import tw.waterball.api.mocks.MockInstagram4JFeedAdapter;
+import tw.waterball.api.pagination.Pagination;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -60,18 +61,18 @@ public interface InstagramFeed extends InstagramPk {
     InstagramFeed unlike();
     InstagramFeed comment(String message);
     List<InstagramComment> getRecentComments();
-    List<InstagramComment> getComments(int maxNum);
+    Pagination<InstagramComment> getPagedComments(int maxNum);
 
-    default List<InstagramComment> getAllComments(int maxNum) {
-        return getComments(Integer.MAX_VALUE);
+    default Pagination<InstagramComment> getPagedAllComments(int maxNum) {
+        return getPagedComments(Integer.MAX_VALUE);
     }
 
     List<InstagramUser> getRecentCommenters();
-    List<InstagramUser> getCommenters(int maxNum);
-    List<InstagramUser> getDistinctCommenters(int maxNum);
+    Pagination<InstagramUser> getPagedCommenters(int maxNum);
+    Pagination<InstagramUser> getPagedDistinctCommenters(int maxNum);
 
-    default List<InstagramUser> getAllCommenters() {
-        return getCommenters(Integer.MAX_VALUE);
+    default Pagination<InstagramUser> getPagedAllCommenters() {
+        return getPagedCommenters(Integer.MAX_VALUE);
     }
 
     default InstagramFeed when(Predicate<InstagramFeed> predicate) {
@@ -85,15 +86,15 @@ public interface InstagramFeed extends InstagramPk {
     }
 
     default ForeachUser foreachCommenters(int maxNum) {
-        return new ForeachUser(getCommenters(maxNum));
+        return new ForeachUser(getPagedCommenters(maxNum).aggregate());
     }
 
     default ForeachUser foreachDistinctCommenters(int maxNum) {
-        return new ForeachUser(getDistinctCommenters(maxNum));
+        return new ForeachUser(getPagedDistinctCommenters(maxNum).aggregate());
     }
 
     default ForeachUser foreachAllCommenters() {
-        return new ForeachUser(getAllCommenters());
+        return new ForeachUser(getPagedAllCommenters().aggregate());
     }
 
 }

@@ -47,14 +47,14 @@ public class GetAllFollowers {
         InstagramSession session = ig.login("dailymatchman", InstagramProperties.password("dailymatchman"));
 
         System.out.println("All followers: ");
-        for (Page<InstagramUser> userPage : session.searchUser("dailymatchman").getFollowers(150)) {
+        for (Page<InstagramUser> userPage : session.searchUser("dailymatchman").getPagedFollowers(150)) {
             for (InstagramUser user : userPage) {
                 System.out.println(user.getUsername());
             }
         }
 
         System.out.println("All followings: ");
-        for (Page<InstagramUser> userPage : session.searchUser("dailymatchman").getFollowings(400)) {
+        for (Page<InstagramUser> userPage : session.searchUser("dailymatchman").getPagedFollowings(400)) {
             for (InstagramUser user : userPage) {
                 System.out.println(user.getUsername());
             }

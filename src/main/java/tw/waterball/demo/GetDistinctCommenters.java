@@ -42,7 +42,7 @@ public class GetDistinctCommenters {
         Instagram ig = Instagram4JInstantiator.instantiate();
 
         // replace with your own username
-        InstagramSession session = ig.login("dailymatchman", InstagramProperties.password("dailymatchman"));
+        InstagramSession session = ig.login("watertroop3", InstagramProperties.password("watertroop3"));
 
         session.searchUser("bambooviii")
                 .getFirstFeed()

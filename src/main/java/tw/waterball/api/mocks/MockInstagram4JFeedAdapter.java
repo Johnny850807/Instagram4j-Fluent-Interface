@@ -51,6 +51,7 @@ package tw.waterball.api.mocks;
 import tw.waterball.api.InstagramComment;
 import tw.waterball.api.InstagramFeed;
 import tw.waterball.api.InstagramUser;
+import tw.waterball.api.pagination.Pagination;
 import tw.waterball.impls.instagram4j.AbstractInstagram4JFeedAdapter;
 import tw.waterball.impls.instagram4j.Instagram4JAdapter;
 import org.brunocvcunha.instagram4j.requests.payload.InstagramFeedItem;
@@ -88,8 +89,8 @@ public class MockInstagram4JFeedAdapter extends AbstractInstagram4JFeedAdapter {
     }
 
     @Override
-    public List<InstagramComment> getComments(int maxNum) {
-        return Collections.emptyList();
+    public Pagination<InstagramComment> getPagedComments(int maxNum) {
+        return Pagination.empty();
     }
 
     @Override
@@ -98,12 +99,12 @@ public class MockInstagram4JFeedAdapter extends AbstractInstagram4JFeedAdapter {
     }
 
     @Override
-    public List<InstagramUser> getCommenters(int maxNum) {
-        return Collections.emptyList();
+    public Pagination<InstagramUser> getPagedCommenters(int maxNum) {
+        return Pagination.empty();
     }
 
     @Override
-    public List<InstagramUser> getDistinctCommenters(int maxNum) {
-        return Collections.emptyList();
+    public Pagination<InstagramUser> getPagedDistinctCommenters(int maxNum) {
+        return Pagination.empty();
     }
 }
