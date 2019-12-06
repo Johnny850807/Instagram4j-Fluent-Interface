@@ -32,9 +32,8 @@
 
 package tw.waterball.demo;
 
-import tw.waterball.api.Instagram;
-import tw.waterball.api.InstagramProperties;
-import tw.waterball.api.InstagramSession;
+import tw.waterball.api.*;
+import tw.waterball.api.pagination.Page;
 import tw.waterball.impls.instagram4j.Instagram4JInstantiator;
 
 public class GetInboxThreadMessages {
@@ -45,8 +44,19 @@ public class GetInboxThreadMessages {
         // replace with your own username
         InstagramSession session = ig.login("watertroop3", InstagramProperties.password("watertroop3"));
 
-        session.inbox().getRecentThreads().stream()
-                .flatMap(thread -> thread.getRecentMessages().stream())
-                .forEach(System.out::println);
+        for (InstagramInboxThread thread : session.inbox().getRecentThreads()) {
+            System.out.print("Thread [");
+            thread.getUsers().forEach(user -> System.out.print(user.getUsername() + " "));
+            System.out.println("]");
+
+            for (Page<InstagramInboxThreadMessage> page : thread.getPagedAllMessages()) {
+                System.out.println("=== New Page ===");
+                for (InstagramInboxThreadMessage message : page) {
+                    System.out.println(message.getContent());
+                }
+            }
+        }
     }
+
+
 }
