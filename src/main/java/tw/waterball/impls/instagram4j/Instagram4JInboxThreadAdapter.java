@@ -79,7 +79,7 @@ public class Instagram4JInboxThreadAdapter extends AbstractInstagramId implement
     @Override
     public List<InstagramInboxThreadMessage> getRecentMessages() {
         return AdapterWrapping.wrap4JInboxThreadMessage(
-                        ig.sendRequest(new InstagramGetInboxThreadRequest(getId(), thread.newest_cursor))
+                        ig.sendRequest(new InstagramGetInboxThreadRequest(getId(), null))
                         .getThread().getItems());
     }
 
