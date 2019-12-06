@@ -58,14 +58,9 @@ public interface InstagramInbox {
     boolean hasPendingRequest();
     List<InstagramInboxThread> getRecentThreads();
     List<InstagramPendingInboxThread> getRecentPendingThreads();
-    List<InstagramInboxThread> getRecentUnseenThreads();
 
     default ForeachPendingThread foreachPendingThread() {
         return new ForeachPendingThread(getRecentPendingThreads());
-    }
-
-    default ForeachThread foreachUnseenThread() {
-        return new ForeachThread(getRecentUnseenThreads());
     }
 
     default ForeachThread foreachThread() {

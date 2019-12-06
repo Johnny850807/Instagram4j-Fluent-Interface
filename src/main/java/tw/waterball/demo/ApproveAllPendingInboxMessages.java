@@ -44,6 +44,7 @@ public class ApproveAllPendingInboxMessages {
         InstagramSession session = ig.login("watertroop3", InstagramProperties.password("watertroop3"));
 
         session.inbox().foreachPendingThread().approve()
-            .foreach( t -> t.foreachRecentMessage().println());
+            .foreach( t -> t.getRecentMessages()
+                        .forEach(System.out::println));
     }
 }

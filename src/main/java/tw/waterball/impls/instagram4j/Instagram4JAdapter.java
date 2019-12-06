@@ -103,4 +103,8 @@ public class Instagram4JAdapter implements Instagram {
     public String getUsername() {
         return instagram4j.getUsername();
     }
+
+    public String getUserId() {
+        return String.valueOf(instagram4j.getUserId());
+    }
 }

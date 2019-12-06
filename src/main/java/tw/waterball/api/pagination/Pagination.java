@@ -31,6 +31,10 @@ public class Pagination<T> implements Iterable<Page<T>> {
         this.pageIterator = pageIterator;
     }
 
+    public static <T> Pagination<T> fromList(List<T> list) {
+        return new Pagination<>(new ListPagingIterator<>(list));
+    }
+
     @Override
     public Iterator<Page<T>> iterator() {
         return pageIterator;

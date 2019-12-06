@@ -49,14 +49,18 @@
 package tw.waterball.impls.instagram4j;
 
 
-import tw.waterball.api.AbstractInstagramId;
-import tw.waterball.api.InstagramInboxThread;
-import tw.waterball.api.InstagramUser;
 import org.brunocvcunha.instagram4j.requests.InstagramDirectShareRequest;
 import org.brunocvcunha.instagram4j.requests.InstagramGetInboxThreadRequest;
-import org.brunocvcunha.instagram4j.requests.payload.InstagramInboxThreadItem;
+import tw.waterball.api.AbstractInstagramId;
+import tw.waterball.api.InstagramInboxThread;
+import tw.waterball.api.InstagramInboxThreadMessage;
+import tw.waterball.api.InstagramUser;
+import tw.waterball.api.pagination.Pagination;
+import tw.waterball.impls.instagram4j.pagination.InstagramInboxThreadMessagePagingIterator;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("WeakerAccess")
@@ -64,7 +68,6 @@ public class Instagram4JInboxThreadAdapter extends AbstractInstagramId implement
     protected transient Instagram4JAdapter ig;
     protected List<InstagramUser> users;
     protected org.brunocvcunha.instagram4j.requests.payload.InstagramInboxThread thread;
-    protected List<String> messages;
 
     public Instagram4JInboxThreadAdapter(Instagram4JAdapter ig, org.brunocvcunha.instagram4j.requests.payload.InstagramInboxThread thread) {
         super(thread.getThread_id());
@@ -74,34 +77,18 @@ public class Instagram4JInboxThreadAdapter extends AbstractInstagramId implement
     }
 
     @Override
-    public List<String> getRecentMessages() {
-        loadMessagesAtIndexIfNotAlreadyLoaded(0);
-        return messages;
+    public List<InstagramInboxThreadMessage> getRecentMessages() {
+        return AdapterWrapping.wrap4JInboxThreadMessage(
+                        ig.sendRequest(new InstagramGetInboxThreadRequest(getId(), thread.newest_cursor))
+                        .getThread().getItems());
     }
 
     @Override
-    public List<String> getMessages(int maxNum) {
-        loadMessagesAtIndexIfNotAlreadyLoaded(maxNum - 1);  //convert to index
-        return messages;
+    public Pagination<InstagramInboxThreadMessage> getMessages(int maxNum) {
+        return new Pagination<>(new InstagramInboxThreadMessagePagingIterator(maxNum, ig, getId()));
     }
 
-    @Override
-    public String getMessage(int index) {
-        loadMessagesAtIndexIfNotAlreadyLoaded(index);
-        return messages.get(index);  // TODO load more messages
-    }
 
-    private void loadMessagesAtIndexIfNotAlreadyLoaded(int index) {
-        if (messages == null || index >= messages.size())
-        {
-            this.thread = ig.sendRequest(new InstagramGetInboxThreadRequest(getId(), thread.getNewest_cursor()))
-                    .getThread();
-
-            messages = thread.getItems().stream()
-                .map(InstagramInboxThreadItem::getText)
-                .collect(Collectors.toList());
-        }
-    }
     @Override
     public InstagramInboxThread reply(String message) {
         ig.sendRequest(InstagramDirectShareRequest.builder()
@@ -115,16 +102,5 @@ public class Instagram4JInboxThreadAdapter extends AbstractInstagramId implement
     public List<InstagramUser> getUsers() {
         return users;
     }
-
-    @Override
-    public boolean hasNewer() {
-        loadMessagesAtIndexIfNotAlreadyLoaded(0);
-        return thread.has_newer;
-    }
-
-    @Override
-    public boolean hasOlder() {
-        loadMessagesAtIndexIfNotAlreadyLoaded(0);
-        return thread.has_older;
-    }
 }
+

@@ -99,4 +99,13 @@ public class AdapterWrapping {
                 .map(thread -> new Instagram4JPendingInboxThreadAdapter(ig, thread))
                 .collect(Collectors.toList());
     }
+
+    public static List<InstagramInboxThreadMessage> wrap4JInboxThreadMessage(List<org.brunocvcunha.instagram4j.requests.payload.InstagramInboxThreadItem> threadItems) {
+        return threadItems.stream()
+                .map(item -> new InstagramInboxThreadMessage(item.getItem_id(),
+                        item.getUser_id(), item.getTimestamp(),
+                        InstagramInboxThreadMessage.Type.valueOf(item.getItem_type()),
+                        item.getText(), Boolean.parseBoolean(item.getLike())))
+                .collect(Collectors.toList());
+    }
 }

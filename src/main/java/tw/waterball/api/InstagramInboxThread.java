@@ -48,27 +48,19 @@
 
 package tw.waterball.api;
 
-import tw.waterball.api.foreach.ForeachString;
+import tw.waterball.api.pagination.Pagination;
 
 import java.util.List;
 
 public interface InstagramInboxThread extends InstagramId {
-    List<String> getRecentMessages();
-    List<String> getMessages(int maxNum);
+    List<InstagramInboxThreadMessage> getRecentMessages();
+    Pagination<InstagramInboxThreadMessage> getMessages(int maxNum);
 
-    default List<String> getAllMessages() {
+    default Pagination<InstagramInboxThreadMessage> getPagedAllMessages() {
         return getMessages(Integer.MAX_VALUE);
     }
 
-    default ForeachString foreachRecentMessage() {
-        return new ForeachString(getRecentMessages());
-    }
-
-    String getMessage(int index);
     InstagramInboxThread reply(String message);
 
     List<InstagramUser> getUsers();
-
-    boolean hasNewer();
-    boolean hasOlder();
 }
