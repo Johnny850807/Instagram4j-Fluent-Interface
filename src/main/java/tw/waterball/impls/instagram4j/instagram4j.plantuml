@@ -33,12 +33,12 @@ title __INSTAGRAM4J's Class Diagram__\n
 
   namespace tw.waterball.impls.instagram4j {
     class tw.waterball.impls.instagram4j.AdapterWrapping {
-        {static} ~ wrap4JComments()
-        {static} ~ wrap4JFeedItems()
-        {static} ~ wrap4JInboxThreads()
-        {static} ~ wrap4JPendingInboxThreads()
-        {static} ~ wrap4JUser()
-        {static} ~ wrap4JUserSummaries()
+        {static} + wrap4JComments()
+        {static} + wrap4JFeedItems()
+        {static} + wrap4JInboxThreads()
+        {static} + wrap4JPendingInboxThreads()
+        {static} + wrap4JUser()
+        {static} + wrap4JUserSummaries()
     }
   }
   
@@ -68,9 +68,9 @@ title __INSTAGRAM4J's Class Diagram__\n
   namespace tw.waterball.impls.instagram4j {
     class tw.waterball.impls.instagram4j.Instagram4JFeedAdapter {
         + comment()
-        + getCommenters()
-        + getComments()
-        + getDistinctCommenters()
+        + getPagedCommenters()
+        + getPagedComments()
+        + getPagedDistinctCommenters()
         + getRecentCommenters()
         + getRecentComments()
         + like()
@@ -84,9 +84,9 @@ title __INSTAGRAM4J's Class Diagram__\n
     class tw.waterball.impls.instagram4j.Instagram4JInboxAdapter {
         - getInboxResult : InstagramInboxResult
         - getPendingInboxResult : InstagramPendingInboxResult
-        + getPendingThreads()
-        + getThreads()
-        + getUnseenThreads()
+        + getRecentPendingThreads()
+        + getRecentThreads()
+        + getRecentUnseenThreads()
         + hasPendingRequest()
         + hasUnseen()
         ~ Instagram4JInboxAdapter()
@@ -104,6 +104,8 @@ title __INSTAGRAM4J's Class Diagram__\n
         + getMessages()
         + getRecentMessages()
         + getUsers()
+        + hasNewer()
+        + hasOlder()
         + reply()
         - loadMessagesAtIndexIfNotAlreadyLoaded()
     }
@@ -142,10 +144,12 @@ title __INSTAGRAM4J's Class Diagram__\n
 
   namespace tw.waterball.impls.instagram4j {
     class tw.waterball.impls.instagram4j.Instagram4JUserAdapter {
+        + Instagram4JUserAdapter()
+        + Instagram4JUserAdapter()
         + follow()
-        + getFeeds()
-        + getFollowers()
-        + getFollowings()
+        + getPagedFeeds()
+        + getPagedFollowers()
+        + getPagedFollowings()
         + getRecentFeeds()
         + getRecentFollowers()
         + getRecentFollowings()
@@ -153,8 +157,6 @@ title __INSTAGRAM4J's Class Diagram__\n
         + likeRecentFeeds()
         + sendDM()
         + unfollow()
-        ~ Instagram4JUserAdapter()
-        ~ Instagram4JUserAdapter()
     }
   }
   

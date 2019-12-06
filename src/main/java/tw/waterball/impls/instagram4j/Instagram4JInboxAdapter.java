@@ -80,20 +80,20 @@ public class Instagram4JInboxAdapter implements InstagramInbox {
     }
 
     @Override
-    public List<InstagramInboxThread> getThreads() {
+    public List<InstagramInboxThread> getRecentThreads() {
         return AdapterWrapping.wrap4JInboxThreads(ig, getInboxResult.getInbox().getThreads());
     }
 
     @Override
-    public List<InstagramPendingInboxThread> getPendingThreads() {
+    public List<InstagramPendingInboxThread> getRecentPendingThreads() {
         if (getPendingInboxResult == null)
             getPendingInboxResult = ig.sendRequest(new InstagramGetPendingInboxRequest());
         return AdapterWrapping.wrap4JPendingInboxThreads(ig, getPendingInboxResult.inbox.getThreads());
     }
 
     @Override
-    public List<InstagramInboxThread> getUnseenThreads() {
-        return getThreads().stream()
+    public List<InstagramInboxThread> getRecentUnseenThreads() {
+        return getRecentThreads().stream()
                 .filter(InstagramInboxThread::hasNewer)
                 .collect(Collectors.toList());
     }

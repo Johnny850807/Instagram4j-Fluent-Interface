@@ -142,6 +142,30 @@ title __INSTAGRAM-FLUENT-API's Class Diagram__\n
   }
   
 
+  namespace tw.waterball.api {
+    namespace pagination {
+      class tw.waterball.api.pagination.Page {
+      }
+    }
+  }
+  
+
+  namespace tw.waterball.api {
+    namespace pagination {
+      class tw.waterball.api.pagination.Pagination {
+      }
+    }
+  }
+  
+
+  namespace tw.waterball.api {
+    namespace pagination {
+      abstract class tw.waterball.api.pagination.PagingIterator {
+      }
+    }
+  }
+  
+
   namespace tw.waterball.demo {
     class tw.waterball.demo.ApproveAllPendingInboxMessages {
     }
@@ -274,11 +298,62 @@ title __INSTAGRAM-FLUENT-API's Class Diagram__\n
   }
   
 
+  namespace tw.waterball.impls.instagram4j {
+    namespace pagination {
+      class tw.waterball.impls.instagram4j.pagination.InstagramCommentPagingIterator {
+      }
+    }
+  }
+  
+
+  namespace tw.waterball.impls.instagram4j {
+    namespace pagination {
+      class tw.waterball.impls.instagram4j.pagination.InstagramCommenterPagingIterator {
+      }
+    }
+  }
+  
+
+  namespace tw.waterball.impls.instagram4j {
+    namespace pagination {
+      class tw.waterball.impls.instagram4j.pagination.InstagramDistinctCommenterPagingIterator {
+      }
+    }
+  }
+  
+
+  namespace tw.waterball.impls.instagram4j {
+    namespace pagination {
+      class tw.waterball.impls.instagram4j.pagination.InstagramFeedPagingIterator {
+      }
+    }
+  }
+  
+
+  namespace tw.waterball.impls.instagram4j {
+    namespace pagination {
+      class tw.waterball.impls.instagram4j.pagination.InstagramFollowerPagingIterator {
+      }
+    }
+  }
+  
+
+  namespace tw.waterball.impls.instagram4j {
+    namespace pagination {
+      class tw.waterball.impls.instagram4j.pagination.InstagramFollowingPagingIterator {
+      }
+    }
+  }
+  
+
   tw.waterball.api.AbstractInstagramId .up.|> tw.waterball.api.InstagramId
   tw.waterball.api.AbstractInstagramPk .up.|> tw.waterball.api.InstagramPk
   tw.waterball.api.foreach.ForeachPendingThread -up-|> tw.waterball.api.foreach.ForeachThread
   tw.waterball.api.mocks.MockInstagram4JFeedAdapter -up-|> tw.waterball.impls.instagram4j.AbstractInstagram4JFeedAdapter
   tw.waterball.api.mocks.MockInstagram4JUserAdapter -up-|> tw.waterball.impls.instagram4j.AbstractInstagram4jUserAdapter
+  tw.waterball.api.pagination.Page .up.|> java.lang.Iterable
+  tw.waterball.api.pagination.Pagination .up.|> java.lang.Iterable
+  tw.waterball.api.pagination.PagingIterator .up.|> java.util.Iterator
   tw.waterball.impls.instagram4j.AbstractInstagram4JFeedAdapter .up.|> tw.waterball.api.InstagramFeed
   tw.waterball.impls.instagram4j.AbstractInstagram4JFeedAdapter -up-|> tw.waterball.api.AbstractInstagramPk
   tw.waterball.impls.instagram4j.AbstractInstagram4jUserAdapter .up.|> tw.waterball.api.InstagramUser
@@ -300,6 +375,18 @@ title __INSTAGRAM-FLUENT-API's Class Diagram__\n
   tw.waterball.impls.instagram4j.Instagram4JSessionAdapter .up.|> tw.waterball.api.InstagramSession
   tw.waterball.impls.instagram4j.Instagram4JSessionAdapter o-- tw.waterball.impls.instagram4j.Instagram4JAdapter : ig
   tw.waterball.impls.instagram4j.Instagram4JUserAdapter -up-|> tw.waterball.impls.instagram4j.AbstractInstagram4jUserAdapter
+  tw.waterball.impls.instagram4j.pagination.InstagramCommentPagingIterator -up-|> tw.waterball.api.pagination.PagingIterator
+  tw.waterball.impls.instagram4j.pagination.InstagramCommentPagingIterator o-- tw.waterball.impls.instagram4j.Instagram4JAdapter : ig
+  tw.waterball.impls.instagram4j.pagination.InstagramCommenterPagingIterator -up-|> tw.waterball.api.pagination.PagingIterator
+  tw.waterball.impls.instagram4j.pagination.InstagramCommenterPagingIterator o-- tw.waterball.impls.instagram4j.pagination.InstagramCommentPagingIterator : instagramCommentPagingIterator
+  tw.waterball.impls.instagram4j.pagination.InstagramDistinctCommenterPagingIterator -up-|> tw.waterball.api.pagination.PagingIterator
+  tw.waterball.impls.instagram4j.pagination.InstagramDistinctCommenterPagingIterator o-- tw.waterball.impls.instagram4j.Instagram4JAdapter : ig
+  tw.waterball.impls.instagram4j.pagination.InstagramFeedPagingIterator -up-|> tw.waterball.api.pagination.PagingIterator
+  tw.waterball.impls.instagram4j.pagination.InstagramFeedPagingIterator o-- tw.waterball.impls.instagram4j.Instagram4JAdapter : ig
+  tw.waterball.impls.instagram4j.pagination.InstagramFollowerPagingIterator -up-|> tw.waterball.api.pagination.PagingIterator
+  tw.waterball.impls.instagram4j.pagination.InstagramFollowerPagingIterator o-- tw.waterball.impls.instagram4j.Instagram4JAdapter : ig
+  tw.waterball.impls.instagram4j.pagination.InstagramFollowingPagingIterator -up-|> tw.waterball.api.pagination.PagingIterator
+  tw.waterball.impls.instagram4j.pagination.InstagramFollowingPagingIterator o-- tw.waterball.impls.instagram4j.Instagram4JAdapter : ig
 
 
 right footer
