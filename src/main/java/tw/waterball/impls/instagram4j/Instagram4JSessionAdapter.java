@@ -49,10 +49,7 @@
 package tw.waterball.impls.instagram4j;
 
 import org.brunocvcunha.instagram4j.requests.*;
-import tw.waterball.api.InstagramFeed;
-import tw.waterball.api.InstagramInbox;
-import tw.waterball.api.InstagramSession;
-import tw.waterball.api.InstagramUser;
+import tw.waterball.api.*;
 
 import java.util.List;
 
@@ -72,6 +69,12 @@ public class Instagram4JSessionAdapter implements InstagramSession {
     public InstagramUser searchUser(String username) {
         return new Instagram4JUserAdapter(ig,
                 ig.sendRequest(new InstagramSearchUsernameRequest(username)).getUser());
+    }
+
+    @Override
+    public List<InstagramComment> searchCommentsUnderFeed(long feedPk) {
+        return AdapterWrapping.wrap4JComments(ig, ig.sendRequest(new InstagramGetMediaCommentsRequest(
+                String.valueOf(feedPk), null)).getComments());
     }
 
     @Override

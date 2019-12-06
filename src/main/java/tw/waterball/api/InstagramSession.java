@@ -64,6 +64,7 @@ public interface InstagramSession {
                 .map(this::searchUser)
                 .collect(Collectors.toList()))    ;
     }
+    List<InstagramComment> searchCommentsUnderFeed(long feedPk);
     InstagramSession comment(long mediaId, String message);
     InstagramSession like(long mediaId);
     List<InstagramFeed> searchFeedsByTag(String tag);

@@ -104,7 +104,7 @@ public interface InstagramUser extends InstagramPk {
         return new MockInstagram4JUserAdapter(getPK(), getUsername(), getCategory(), getCity());
     }
 
-    default ForeachFeed foreachFeed() {
+    default ForeachFeed foreachRecentFeed() {
         return new ForeachFeed(getRecentFeeds());
     }
 

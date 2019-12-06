@@ -66,4 +66,9 @@ public class Instagram4JCommentAdapter extends AbstractInstagramPk implements In
     public InstagramUser getCommenter() {
         return new Instagram4JUserAdapter(ig, comment.getUser());
     }
+
+    @Override
+    public String getContent() {
+        return comment.getText();
+    }
 }
