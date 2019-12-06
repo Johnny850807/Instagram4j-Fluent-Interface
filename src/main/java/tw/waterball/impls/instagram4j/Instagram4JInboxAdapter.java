@@ -49,12 +49,15 @@
 package tw.waterball.impls.instagram4j;
 
 
+import org.brunocvcunha.instagram4j.requests.InstagramApprovePendingThreadRequest;
+import org.brunocvcunha.instagram4j.requests.InstagramDeclinePendingThreadRequest;
 import tw.waterball.api.InstagramInbox;
 import tw.waterball.api.InstagramInboxThread;
 import tw.waterball.api.InstagramPendingInboxThread;
 import org.brunocvcunha.instagram4j.requests.InstagramGetPendingInboxRequest;
 import org.brunocvcunha.instagram4j.requests.payload.InstagramInboxResult;
 import org.brunocvcunha.instagram4j.requests.payload.InstagramPendingInboxResult;
+import tw.waterball.api.InstagramSession;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -89,6 +92,18 @@ public class Instagram4JInboxAdapter implements InstagramInbox {
         if (getPendingInboxResult == null)
             getPendingInboxResult = ig.sendRequest(new InstagramGetPendingInboxRequest());
         return AdapterWrapping.wrap4JPendingInboxThreads(ig, getPendingInboxResult.inbox.getThreads());
+    }
+
+    @Override
+    public InstagramInbox approvePendingThread(String threadId) {
+        ig.sendRequest(new InstagramApprovePendingThreadRequest(threadId));
+        return this;
+    }
+
+    @Override
+    public InstagramInbox declinePendingThread(String threadId) {
+        ig.sendRequest(new InstagramDeclinePendingThreadRequest(threadId));
+        return this;
     }
 
 }

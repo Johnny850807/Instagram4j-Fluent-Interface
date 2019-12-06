@@ -70,6 +70,4 @@ public interface InstagramSession {
     List<InstagramFeed> searchFeedsByTag(String tag);
     InstagramInbox inbox();
 
-    InstagramSession approvePendingThread(String threadId);
-    InstagramSession declinePendingThread(String threadId);
 }
