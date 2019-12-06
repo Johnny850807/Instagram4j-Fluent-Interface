@@ -100,4 +100,16 @@ public class Instagram4JSessionAdapter implements InstagramSession {
         return new Instagram4JInboxAdapter(ig, ig.sendRequest(new InstagramGetInboxRequest()));
     }
 
+    @Override
+    public InstagramSession approvePendingThread(String threadId) {
+        ig.sendRequest(new InstagramApprovePendingThreadRequest(threadId));
+        return this;
+    }
+
+    @Override
+    public InstagramSession declinePendingThread(String threadId) {
+        ig.sendRequest(new InstagramDeclinePendingThreadRequest(threadId));
+        return this;
+    }
+
 }
