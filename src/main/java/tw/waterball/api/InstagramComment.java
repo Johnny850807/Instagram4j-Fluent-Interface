@@ -50,5 +50,6 @@ package tw.waterball.api;
 
 public interface InstagramComment extends InstagramPk {
     InstagramUser getCommenter();
+    String getContent();
 
 }

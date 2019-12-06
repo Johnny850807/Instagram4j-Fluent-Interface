@@ -61,6 +61,12 @@ public interface InstagramFeed extends InstagramPk {
     InstagramFeed unlike();
     InstagramFeed comment(String message);
     List<InstagramComment> getRecentComments();
+
+    default boolean hasComments() {
+        List<InstagramComment> recentComments = getRecentComments();
+        return recentComments != null && !recentComments.isEmpty();
+    }
+
     Pagination<InstagramComment> getPagedComments(int maxNum);
 
     default Pagination<InstagramComment> getPagedAllComments(int maxNum) {
