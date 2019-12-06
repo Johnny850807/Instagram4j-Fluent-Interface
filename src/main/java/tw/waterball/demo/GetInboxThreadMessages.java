@@ -33,7 +33,6 @@
 package tw.waterball.demo;
 
 import tw.waterball.api.Instagram;
-import tw.waterball.api.InstagramInboxThread;
 import tw.waterball.api.InstagramProperties;
 import tw.waterball.api.InstagramSession;
 import tw.waterball.impls.instagram4j.Instagram4JInstantiator;
@@ -46,7 +45,7 @@ public class GetInboxThreadMessages {
         // replace with your own username
         InstagramSession session = ig.login("watertroop3", InstagramProperties.password("watertroop3"));
 
-        session.inbox().getThreads().stream()
+        session.inbox().getRecentThreads().stream()
                 .flatMap(thread -> thread.getRecentMessages().stream())
                 .forEach(System.out::println);
     }

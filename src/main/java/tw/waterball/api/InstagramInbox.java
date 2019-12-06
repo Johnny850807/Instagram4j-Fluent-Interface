@@ -56,19 +56,19 @@ import java.util.List;
 public interface InstagramInbox {
     boolean hasUnseen();
     boolean hasPendingRequest();
-    List<InstagramInboxThread> getThreads();
-    List<InstagramPendingInboxThread> getPendingThreads();
-    List<InstagramInboxThread> getUnseenThreads();
+    List<InstagramInboxThread> getRecentThreads();
+    List<InstagramPendingInboxThread> getRecentPendingThreads();
+    List<InstagramInboxThread> getRecentUnseenThreads();
 
     default ForeachPendingThread foreachPendingThread() {
-        return new ForeachPendingThread(getPendingThreads());
+        return new ForeachPendingThread(getRecentPendingThreads());
     }
 
     default ForeachThread foreachUnseenThread() {
-        return new ForeachThread(getUnseenThreads());
+        return new ForeachThread(getRecentUnseenThreads());
     }
 
     default ForeachThread foreachThread() {
-        return new ForeachThread(getThreads());
+        return new ForeachThread(getRecentThreads());
     }
 }

@@ -61,7 +61,7 @@ public class GetUnseenInboxMessages {
         // replace with your own username
         InstagramSession session = ig.login("watertroop3", InstagramProperties.password("watertroop3"));
 
-        for (InstagramInboxThread inboxThread : session.inbox().getUnseenThreads()) {
+        for (InstagramInboxThread inboxThread : session.inbox().getRecentUnseenThreads()) {
             System.out.println("Thread: " + inboxThread.getUsers().get(0).getUsername() + " > ");
             for (String recentMessage : inboxThread.getRecentMessages()) {
                 System.out.println(recentMessage);
