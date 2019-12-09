@@ -63,6 +63,9 @@ public interface InstagramInbox {
         return new ForeachPendingThread(getRecentPendingThreads());
     }
 
+    InstagramInbox approvePendingThread(String threadId);
+    InstagramInbox declinePendingThread(String threadId);
+
     default ForeachThread foreachThread() {
         return new ForeachThread(getRecentThreads());
     }

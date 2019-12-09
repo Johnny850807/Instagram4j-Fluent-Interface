@@ -100,4 +100,6 @@ public class Instagram4JSessionAdapter implements InstagramSession {
         return new Instagram4JInboxAdapter(ig, ig.sendRequest(new InstagramGetInboxRequest()));
     }
 
+
+
 }

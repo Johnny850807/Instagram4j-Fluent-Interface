@@ -37,7 +37,6 @@ public class InstagramInboxThreadMessagePagingIterator extends PagingIterator<In
     private String threadId;
     private String nextMaxId;
     private InstagramInboxThreadResult result;
-    private Map<String, String> userIdToUserNameMap;
 
     public InstagramInboxThreadMessagePagingIterator(Instagram4JAdapter ig, String threadId) {
         this.ig = ig;
