@@ -57,6 +57,7 @@ import java.util.function.Predicate;
 
 public interface InstagramFeed extends InstagramPk {
     String getContent();
+    long getTimeStamp();
     InstagramFeed like();
     InstagramFeed unlike();
     InstagramFeed comment(String message);

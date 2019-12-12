@@ -72,11 +72,13 @@ import tw.waterball.api.InstagramFeed;
 public abstract class AbstractInstagram4JFeedAdapter extends AbstractInstagramPk implements InstagramFeed {
     protected InstagramFeedItem feed;
     protected String content;
+    protected long timestamp;
 
     public AbstractInstagram4JFeedAdapter(InstagramFeedItem feed) {
         super(feed.getPk());
         this.feed = feed;
         this.content = feed.getCaption() == null ? "" : feed.getCaption().getText();
+        this.timestamp = feed.getTaken_at();
     }
 
     public AbstractInstagram4JFeedAdapter(long pk) {
@@ -85,5 +87,10 @@ public abstract class AbstractInstagram4JFeedAdapter extends AbstractInstagramPk
 
     public String getContent() {
         return content;
+    }
+
+    @Override
+    public long getTimeStamp() {
+        return timestamp;
     }
 }
