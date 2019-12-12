@@ -69,7 +69,7 @@ public interface InstagramFeed extends InstagramPk {
 
     Pagination<InstagramComment> getPagedComments(int maxNum);
 
-    default Pagination<InstagramComment> getPagedAllComments(int maxNum) {
+    default Pagination<InstagramComment> getPagedAllComments() {
         return getPagedComments(Integer.MAX_VALUE);
     }
 

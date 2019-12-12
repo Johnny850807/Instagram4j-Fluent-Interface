@@ -58,6 +58,9 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 public interface InstagramUser extends InstagramPk {
+    default String getId() {
+        return String.valueOf(getPK());
+    }
     String getUsername();
     String getCity();
     String getCategory();

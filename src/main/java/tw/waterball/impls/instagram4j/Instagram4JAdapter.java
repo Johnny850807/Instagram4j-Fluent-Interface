@@ -51,6 +51,7 @@ package tw.waterball.impls.instagram4j;
 import org.apache.http.StatusLine;
 import tw.waterball.api.Instagram;
 import tw.waterball.api.InstagramSession;
+import tw.waterball.api.InstagramUser;
 import tw.waterball.exceptions.InstagramException;
 import org.brunocvcunha.instagram4j.Instagram4j;
 import org.brunocvcunha.instagram4j.requests.InstagramRequest;
@@ -99,6 +100,7 @@ public class Instagram4JAdapter implements Instagram {
             throw new InstagramException(err);
         }
     }
+
 
     public String getUsername() {
         return instagram4j.getUsername();

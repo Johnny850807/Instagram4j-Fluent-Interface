@@ -66,6 +66,11 @@ public class Instagram4JSessionAdapter implements InstagramSession {
     }
 
     @Override
+    public String getUserId() {
+        return ig.getUserId();
+    }
+
+    @Override
     public InstagramUser searchUser(String username) {
         return new Instagram4JUserAdapter(ig,
                 ig.sendRequest(new InstagramSearchUsernameRequest(username)).getUser());

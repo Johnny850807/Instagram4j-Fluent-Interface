@@ -43,9 +43,11 @@ public abstract class PagingIterator<T> implements Iterator<Page<T>> {
     @Override
     public Page<T> next() {
         Page<T> nextPage = getNextPage();
-        int pageSize = nextPage.size();
-        nextPage.setItems(nextPage.get().subList(0 , Math.min(nextPage.size(), remainingCount))); // limit the page
-        remainingCount -= pageSize;
+        if (hasLimit) {
+            int pageSize = nextPage.size();
+            nextPage.setItems(nextPage.get().subList(0 , Math.min(nextPage.size(), remainingCount))); // limit the page
+            remainingCount -= pageSize;
+        }
         return nextPage;
     }
 

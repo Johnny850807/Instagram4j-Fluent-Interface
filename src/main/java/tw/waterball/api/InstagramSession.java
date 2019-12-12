@@ -57,6 +57,7 @@ import java.util.stream.Collectors;
 
 public interface InstagramSession {
     String getUsername();
+    String getUserId();
 
     InstagramUser searchUser(String username);
     default ForeachUser searchUsers(String ...usernames) {
