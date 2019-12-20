@@ -34,23 +34,12 @@ package tw.waterball.exceptions;
 
 public class InstagramException extends RuntimeException {
 
-    public InstagramException() {
-    }
-
-    public InstagramException(String message) {
-        super(message);
-    }
-
-    public InstagramException(String message, Throwable cause) {
-        super(message, cause);
+    public InstagramException (String resource) {
+        super("Instagram API error occurs, may due to its api throttling, or you don't have the permission to access the resource ["+resource+"].");
     }
 
     public InstagramException(Throwable cause) {
         super(cause);
-    }
-
-    public InstagramException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
     }
 
     public InstagramException(String reasonPhrase, int statusCode) {

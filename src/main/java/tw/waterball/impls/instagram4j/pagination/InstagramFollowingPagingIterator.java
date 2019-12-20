@@ -22,6 +22,7 @@ import org.brunocvcunha.instagram4j.requests.payload.InstagramGetUserFollowersRe
 import tw.waterball.api.InstagramUser;
 import tw.waterball.api.pagination.Page;
 import tw.waterball.api.pagination.PagingIterator;
+import tw.waterball.exceptions.InstagramException;
 import tw.waterball.impls.instagram4j.AdapterWrapping;
 import tw.waterball.impls.instagram4j.Instagram4JAdapter;
 
@@ -53,6 +54,8 @@ public class InstagramFollowingPagingIterator extends PagingIterator<InstagramUs
     @Override
     protected Page<InstagramUser> getNextPage() {
         this.result = ig.sendRequest(new InstagramGetUserFollowingRequest(userPk, nextMaxId));
+        if (result.getUsers() == null)
+            throw new InstagramException("Get users followings");
         nextMaxId = result.getNext_max_id();
         return new Page<>(AdapterWrapping.wrap4JUserSummaries(ig, result.getUsers()));
     }

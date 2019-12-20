@@ -21,6 +21,7 @@ import org.brunocvcunha.instagram4j.requests.payload.InstagramFeedResult;
 import tw.waterball.api.InstagramFeed;
 import tw.waterball.api.pagination.Page;
 import tw.waterball.api.pagination.PagingIterator;
+import tw.waterball.exceptions.InstagramException;
 import tw.waterball.impls.instagram4j.AdapterWrapping;
 import tw.waterball.impls.instagram4j.Instagram4JAdapter;
 
@@ -52,6 +53,8 @@ public class InstagramFeedPagingIterator extends PagingIterator<InstagramFeed> {
     @Override
     protected Page<InstagramFeed> getNextPage() {
         this.result = ig.sendRequest(new InstagramUserFeedRequest(userPk, nextMaxId, 0, 0));
+        if (result.getItems() == null)
+            throw new InstagramException("Get user feeds");
         nextMaxId = result.getNext_max_id();
         return new Page<>(AdapterWrapping.wrap4JFeedItems(ig, result.getItems()));
     }

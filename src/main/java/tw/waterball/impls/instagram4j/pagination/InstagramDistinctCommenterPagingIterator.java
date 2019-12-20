@@ -21,6 +21,7 @@ import org.brunocvcunha.instagram4j.requests.payload.InstagramGetMediaCommentsRe
 import tw.waterball.api.InstagramUser;
 import tw.waterball.api.pagination.Page;
 import tw.waterball.api.pagination.PagingIterator;
+import tw.waterball.exceptions.InstagramException;
 import tw.waterball.impls.instagram4j.Instagram4JAdapter;
 import tw.waterball.impls.instagram4j.Instagram4JUserAdapter;
 
@@ -56,6 +57,9 @@ public class InstagramDistinctCommenterPagingIterator extends PagingIterator<Ins
     @Override
     protected Page<InstagramUser> getNextPage() {
         this.result = ig.sendRequest(new InstagramGetMediaCommentsRequest(String.valueOf(userPk), nextMaxCommentPk));
+
+        if (result.getComments() == null)
+            throw new InstagramException("Get comments");
 
         // the reason that we have to pass the pk of the first item of the comment page instead of result.getNext_max_id().
         // is that the nextMaxId doesn't work for the comments api

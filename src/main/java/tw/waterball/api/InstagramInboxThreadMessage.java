@@ -30,7 +30,8 @@ public class InstagramInboxThreadMessage {
     public enum Type {
         text,
         placeholder /*audio, sticker or gif*/,
-        media /*photo*/
+        media /*photo*/,
+        action_log
     }
 
     public InstagramInboxThreadMessage(String itemId, String userId, long timestamp, Type type, String content, boolean like) {

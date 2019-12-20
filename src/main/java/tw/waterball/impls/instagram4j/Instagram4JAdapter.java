@@ -97,7 +97,7 @@ public class Instagram4JAdapter implements Instagram {
         try {
             return instagram4j.sendRequest(request);
         } catch (IOException | NullPointerException err) {
-            throw new InstagramException(err);
+            throw new InstagramException(request.getClass().getSimpleName());
         }
     }
 

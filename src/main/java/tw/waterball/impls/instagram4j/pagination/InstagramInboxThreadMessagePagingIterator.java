@@ -24,6 +24,7 @@ import tw.waterball.api.InstagramInboxThreadMessage;
 import tw.waterball.api.InstagramUser;
 import tw.waterball.api.pagination.Page;
 import tw.waterball.api.pagination.PagingIterator;
+import tw.waterball.exceptions.InstagramException;
 import tw.waterball.impls.instagram4j.AdapterWrapping;
 import tw.waterball.impls.instagram4j.Instagram4JAdapter;
 
@@ -57,6 +58,8 @@ public class InstagramInboxThreadMessagePagingIterator extends PagingIterator<In
     @Override
     protected Page<InstagramInboxThreadMessage> getNextPage() {
         this.result = ig.sendRequest(new InstagramGetInboxThreadRequest(threadId, nextMaxId));
+        if (result.getThread() == null)
+            throw new InstagramException("Get inbox thread");
         nextMaxId = result.getThread().getOldest_cursor();
         return new Page<>(AdapterWrapping.wrap4JInboxThreadMessage(result.getThread().getItems()));
     }
